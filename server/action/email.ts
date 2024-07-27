@@ -12,9 +12,11 @@ export const sendVerificationEmail = async (email: string, token: string) => {
     from: "Acme <onboarding@resend.dev>",
     to: [email],
     subject: "Hello World",
-    html: `<p>Your Confirmation Code: ${token}</p>`,
+    html: `<p>Your Confirmation Code: ${token}</p>
+    <a href='${confirmLink}'>Click to verfiy your account</a>
+    `,
   });
-
+  console.log(confirmLink);
   if (error) {
     return console.error("Error sending email", error);
   }

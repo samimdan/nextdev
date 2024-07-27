@@ -44,8 +44,12 @@ export const RegisterForm = () => {
   const { execute, status, isExecuting ,hasSucceeded,hasErrored} = useAction(emailRegister,{
     
     onSuccess({data }){
-      if (data?.success) setSuccess(data.success)}
-    })
+      if(data?.success){
+        setSuccess(data?.success)
+      }    
+      if(data?.error) (data?.error)
+    }})
+    
   const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
 
     execute(values);
