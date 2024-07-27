@@ -13,6 +13,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       clientId:
         "492216672486-eivpovusj4mnq0vkdo6ufmqpl8hsh338.apps.googleusercontent.com",
       clientSecret: "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",
+      allowDangerousEmailAccountLinking: true,
     }),
   ],
 });
