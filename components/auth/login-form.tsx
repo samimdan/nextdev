@@ -1,5 +1,9 @@
-"use client";
+//!-------------------------------------------------------------------------- */
+//!                                LOGIN FORM                                 */
+//!-------------------------------------------------------------------------- */
 
+"use client";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { AuthCard } from "./auth-card";
 import {
@@ -20,7 +24,11 @@ import Link from "next/link";
 import { emailSignIn } from "@/server/action/email-signin";
 import { useAction } from "next-safe-action/hooks";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { FormSuccess } from "./form-success";
+import { FormError } from "./form-error";
+import type { TLoginSchema } from "@/app/types/types";
+import type { TLogInData } from "@/app/types/types";
+import { auth,signIn } from "@/auth"
 /* ------------------------------ END OF IMPORT ----------------------------- */
 
 export const LoginForm = () => {
@@ -31,12 +39,24 @@ export const LoginForm = () => {
       password: "",
     },
   });
-  const { execute, status } = useAction(emailSignIn, {
-    onSuccess(data) {
+  const [success,setSuccess]=React.useState("");
+const [error, setError] = React.useState("");
+  const { execute, status,result } = useAction(emailSignIn, {
+    onSuccess(result) {
+    if (result.data?.success){
+      setSuccess(result.data.success);
+    }
+    if(result.data?.error){
       
+      setError(result.data.error)
+    }
     },
-  });
-  const onSubmit = (values: z.infer<typeof loginSchema>) => {
+    onError(error) {
+      console.log(error)
+    }
+    }
+  );
+  const onSubmit = (values: TLoginSchema) => {
     execute(values);
   };
   return (
@@ -88,10 +108,13 @@ export const LoginForm = () => {
                   </FormItem>
                 )}
               />
+                 <FormSuccess message={success} />
+                 <FormError message={error} />
               <Button size={"sm"} asChild variant={"link"}>
                 <Link href="/auth/reset">Forgot password?</Link>
               </Button>
             </div>
+         
             <Button
               type="submit"
               className={cn(
